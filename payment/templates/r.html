@@ -1,0 +1,52 @@
+			<table 	>
+<tbody>
+	{%for  i in pays %}
+<tr class="row1">
+<!-- 	<td class="field-phone_number">{{i.date_joined|date:"d.m.y"}}</td>
+ -->
+<td class="field-phone_number">{{i.teacher.name}}</td>
+
+<td class="field-phone_number">{{i.teacher.subject}}</td>
+<td class="field-name"><input size="1" type="text" name="" value="{%if i.debt == None %}0{%else%}{{i.debt}}{%endif%}" maxlength="50" >
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+<td>
+			<table 	>
+<tbody>
+{%for  i, v in d %}
+<tr class="row1">
+<td class="topay"><input size="1" id="{{i.id}}"type="text" name="topay-{{i.id}}" value="{%if i.has_to_pay == None %}{{i.contract.price}}{%else%}{{i.has_to_pay}}{%endif%}" maxlength="50" >
+<td class="field-name"><input size="1" type="text" name="" id="special" value="={{v}}" maxlength="50" >
+</td>
+</tr>
+{% endfor %}
+
+
+</tbody>
+</table></td>
+<td>
+			<table 	>
+<tbody>
+{%for  i, v in d %}
+<tr class="row1">
+<td class="tochange"><input size="1" id="{{i.id}}" type="text" name="params-{{i.id}}" value="{{i.paid}}" maxlength="50" >
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table></td>
+<td>
+			<table 	>
+<tbody>
+{%for  i, v in d %}
+<tr class="row1">
+<td class="field-name"><input size="4" type="text" name="" value="{%if i.has_to_pay == None %} - {%else%}{{i.date|date:'d.m.y'}}{%endif%}" maxlength="50" >
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table></td>
