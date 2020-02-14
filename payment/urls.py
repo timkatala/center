@@ -12,5 +12,6 @@ urlpatterns = [
    #      name='country-autocomplete',
    #  ),
     path('search/', search_users, name='search_users'),
+    path('debt/', debt, name='debt'),
 
 ]

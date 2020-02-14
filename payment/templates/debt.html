@@ -1,0 +1,54 @@
+{%extends "admin/base_site.html"%}
+{% block extrahead %}
+
+
+
+
+
+<script type="text/javascript" src="/uz/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/inlines.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/change_form.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.js"></script>
+<script type="text/javascript" src="/static/admin/js/prepopulate_init.js"></script>
+<script type="text/javascript" src="/static/admin/js/urlify.js"></script>
+<script type="text/javascript" src="/static/admin/js/prepopulate.js"></script>
+<script type="text/javascript" src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+{% endblock %}}
+{% block content %}
+<form method="POST" action="">
+	{% csrf_token%}
+    <select name="teacher" id="id_contracts-0-teacher" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
+  <option value="">---------</option>
+
+{%for t in teachers %}
+<option value="{{t.id}}">{{t.name}}</option>
+{%endfor %}
+
+</select>
+    
+    <select name="time" id="id_contracts-0-teacher" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
+  <option value="">---------</option>
+
+{%for t in times %}
+<option value="{{t}}">{{t}}</option>
+{%endfor %}
+
+</select>
+    <select name="parity" id="id_contracts-0-teacher" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
+  <option value="">---------</option>
+
+<option value="Toq">Toq</option>
+<option value="Juft">Juft</option>
+
+
+</select>
+<input type="submit" value="Jo'natish" class="default" name="_save">
+    </form>
+
+
+{% endblock %}
+

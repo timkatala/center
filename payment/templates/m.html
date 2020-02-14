@@ -1,5 +1,6 @@
-<ul id="country-list">
+        <datalist class="search-results" id="my-list" name="my-list">
+
 {%for i in data %}
-<li onClick=selectCountry({{i.username}})>{{i.username}}</li>
+     <option value="{{i.username}}"></option>
 {%endfor%}
-</ul>
+</datalist>

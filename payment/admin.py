@@ -3,18 +3,16 @@ from django.template.loader import render_to_string
 from django.contrib import admin
 from django.db.models import IntegerField, DateTimeField
 from django.forms import TextInput, Textarea
-from .utils import timer, MONTHS
+from .utils import *
 from django.contrib.auth.models import User
 from .models import *
 from django.urls import reverse
 from django.utils.html import format_html
 from django.forms.models import BaseInlineFormSet, ModelForm
-from .forms import StudentForm
-from django.db.models import Case,Sum, When, F, Value
+# from .forms import StudentForm
+from django.db.models import Case,Sum, When, F, Value, Q
+from django.http import HttpResponse, HttpResponseNotAllowed
 
-
-class TeacherAdmin(admin.StackedInline):
-	model = Teacher
 
 
 class AlwaysChangedModelForm(ModelForm):
@@ -44,13 +42,13 @@ def p(t=None,s=None):
 			if db_field.name == 'teacher':
 				if t:
 					field.queryset = t.student.teacher.all()  
-				else:
-					field.queryset = s.teacher.all()
+				# else:
+				# 	field.queryset = s.teacher.all()
 				
 			if db_field.name == 'contract':
 				if t:
 					field.queryset = t.contracts.all()  
-				else:
+				if s:
 					field.queryset = s.contracts.all()
 			return field	
 		def get_formset(self, request, obj=None, **kwargs):
@@ -64,13 +62,14 @@ def p(t=None,s=None):
 
 class ContractTabular(admin.TabularInline):
 	model = Contract
+	extra=0
 
 
 class StudentAdmin(admin.ModelAdmin):
 
 	model = Student	
 	inlines  = []
-
+	
 	list_editable = ('charachteristics',)
 	
 	list_display=('charachteristics','name','phone_number','fathers_phone','mothers_phone','shartnoma',)
@@ -104,7 +103,7 @@ class StudentAdmin(admin.ModelAdmin):
 		s = render_to_string('r.html',{'pays':pays, 'd':d,
 			})
 
-		print(d)
+		#print(d)
 		# link = reverse("admin:auth_user_change", args=[1])
 		#return format_html('<a href="{}">Edit {}</a>', link, obj.name)
 		return format_html(s)
@@ -134,13 +133,20 @@ class StudentAdmin(admin.ModelAdmin):
 		return format_html(f'<input type="text" name="param" value="{self.pays}" class="vTextField" maxlength="50" id="param">')
 	shartnoma.allow_tags = True
 	def changelist_view(self, request, extra_context=None):
-		print(request.POST)
+		#print(request.POST)
+		for i, v in request.POST.items():
+			if i.startswith('params'):
+				id = i.split('-')[1]
+				Payment.objects.filter(pk=id).update(paid=v, has_to_pay=request.POST.get(f'topay-{id}'))
 		return super(StudentAdmin, self).changelist_view(request, extra_context)
 	def get_model_perms(self, request):
-		"""
-		Return empty perms dict thus hiding the model from admin index.
-		"""
-		return {}
+		if request.user.kassir:
+			return HttpResponseNotAllowed
+		return super(StudentAdmin, self).get_model_perms(request)
+	def get_object(self, request, object_id, form_field=None):
+		if request.user.kassir:
+			return Htt
+		return super().get_object(request, object_id, form_field=None)
 	class Media:
 		js = ('js/autoc.js','js/dfs.js','admin/js/inlines.js','admin/js/change_form.js','admin/js/prepopulate_init.js',)
 # 		css={
@@ -155,8 +161,115 @@ class StudentAdmin(admin.ModelAdmin):
 	# 	return self.list_display + extra_fields
 
 admin.site.register(Student,StudentAdmin)
-admin.site.register(Teacher)
-admin.site.register(Lesson)
+
+
+
+class SalaryTabular(admin.TabularInline):
+	model = Salary
+	extra  =0
+
+
+class TeacherAdmin(admin.ModelAdmin):
+
+	model = Teacher	
+	change_list_template='new.html'
+	list_display=('name','shartnoma',)
+	inlines=[SalaryTabular, p(None, None),]
+	def shartnoma(self, obj):
+		debt  = obj.salaries.all().aggregate(
+													debt=Sum(-F('official')+F('paid'))-Sum(Case(When(period=timer(), then=-F('official')+F('paid')), 
+														When(period=timer1(), then=-F('official')+F('paid')),output_field=IntegerField(), default=0)),
+												
+													)
+		earned  = obj.payments.all().aggregate(
+													
+													previous=Sum((F('percent')*F('paid'))/100, filter=Q(period=timer1())),
+												current=Sum((F('percent')*F('paid'))/100, filter=Q(period=timer())),
+												debt=Sum((F('percent')*F('paid'))/100, filter=~(Q(period=timer())|Q(period=timer1()))),
+											)
+		#print(earned)
+		previous, created = Salary.objects.get_or_create(period=timer1(), teacher=obj,
+			defaults={'paid': 0, 'official':0})
+		current, created = Salary.objects.get_or_create(period=timer(), teacher=obj,
+			defaults={'paid': 0, 'official':0})
+		if earned['debt']==None:
+			earned['debt'] = 0
+		d = {
+		'id':obj.id,
+			'debt':debt['debt']-earned['debt'],
+			'earned':earned,
+			'previous_debt':debt['debt']-earned['debt']-earned['previous']-previous.official+previous.paid,
+			'current_debt':debt['debt']-earned['debt']-earned['previous']-previous.official+previous.paid-earned['current']-current.official+current.paid,
+			'previous':previous,
+			'current':current,
+		}
+
+		s = render_to_string('r1.html',d)
+		#print(s)
+		return format_html(s)
+	shartnoma.allow_tags = True
+	shartnoma.short_description = format_html(f"""Qarzi
+
+															<th scope="col" class="column-previous-paid">
+													   <div class="text"><span>Hisoblandi</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+													<th scope="col" class="column-previous-official">
+													   <div class="text"><span>Rasmiy oylik</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+													<th scope="col" class="column-previous-earned">
+													   <div class="text"><span>Naqd topdi
+													</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+													<th scope="col" class="column-previous-debt">
+													   <div class="text"><span>Qarzdorlik</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+
+															<th scope="col" class="column-current-paid">
+													   <div class="text"><span>Hisoblandi</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+													<th scope="col" class="column-current-official">
+													   <div class="text"><span>Rasmiy oylik</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+													<th scope="col" class="column-current-earned">
+													   <div class="text"><span>Naqd topdi
+													</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+													<th scope="col" class="column-current-debt">
+													   <div class="text"><span>Qarzdorlik</span></div>
+													   <div class="clear"></div>
+													   
+													</th>
+													""")	
+	def changelist_view(self, request, extra_context=None):
+		#print(request.POST)
+		for i, v in request.POST.items():
+			if i.startswith('pr_paid'):
+				id = i.split('-')[1]
+				Salary.objects.filter(pk=id).update(paid=v, official=request.POST.get(f'pr_official-{id}'))
+			if i.startswith('cur_paid'):
+				id = i.split('-')[1]
+				Salary.objects.filter(pk=id).update(paid=v, official=request.POST.get(f'cur_official-{id}'))
+		return super(TeacherAdmin, self).changelist_view(request, extra_context)
+	class Media:
+		js = ('js/teacher.js',)
+admin.site.register(Teacher, TeacherAdmin)
+
+
+
 admin.site.register(Contract)
 
 class PaymentAdmin(admin.ModelAdmin):

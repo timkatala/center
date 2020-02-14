@@ -62,26 +62,23 @@ $.ajaxSetup({
 
         sVal = $(this).val();
 
-         var url = window.location.origin + '/uz/search/';                        
-         console.log(url);
-          
+        var url = window.location.origin + '/uz/search/';                        
+       if($('#my-list option').filter(function(){
+        return this.value=== sVal;        
+    }).length) {
+        //send ajax request
+                window.location = '/uz/admin/payment/student/?q='+sVal;
+    }
+           
      $.ajax({
      type: 'POST',
      url :window.location.origin + '/uz/search/',
                   data: { search:sVal },
-                  beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-                 $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
-
-    },
+                 
     
      success: function(data){
-        console.log(data);
-         $("#suggesstion-box").show();
-         $("#suggesstion-box").html(data);
-         $("#search-box").css("background","#FFF");
+        // console.log(data);
+         $("#search-results").html(data);
      }
      });
 
@@ -89,10 +86,29 @@ $.ajaxSetup({
         
     });
 
-  function selectCountry(val) {
-$("#search-box").val(val);
-$("#suggesstion-box").hide();
-}
+  // $("[list='my-list']").on("input",  function() {
+  //     console.log("Gf");
+
+  //   window.location = $("#my-list option[value='"+$("[list='my-list']").val()+"']").find("a").attr("href");
+  //       });
+
+
+$('.topay').keyup(function() {  
+    var i=this.id;
+var id = i.split('-')[1];
+      var input1 = parseInt($('#tochange-'+id).val());
+      var s  =  'topay-' + id;
+   var input2 = parseInt($('#'+s).val());
+  console.log(id, input1, input2);
+  if (isNaN(input1) || isNaN(input2)) {
+    $('#total').text('Both inputs must be numbers');
+  } else {          
+    // console.log('dfs');
+    $('#special-'+id).val('='+(input1 + input2));
+  }
+});
+
+
 });
 
 //To select country name

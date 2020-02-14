@@ -31,8 +31,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'dal',
-    'dal_select2',
+    # 'dal',
+    # 'dal_select2',
     'jet',
 
     'django.contrib.admin',
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'payment',
+    'branch',
    # 'debug_toolbar',
 
 ]
@@ -112,6 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'branch.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

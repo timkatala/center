@@ -157,7 +157,7 @@ msgid "Added."
 msgstr "Добавлено."
 
 msgid "and"
-msgstr "и"
+msgstr "va"
 
 #, python-brace-format
 msgid "Changed {fields} for {name} \"{object}\"."
@@ -175,7 +175,7 @@ msgid "No fields changed."
 msgstr "Ни одно поле не изменено."
 
 msgid "None"
-msgstr "Нет"
+msgstr "Yo'q"
 
 msgid ""
 "Hold down \"Control\", or \"Command\" on a Mac, to select more than one."
@@ -550,7 +550,7 @@ msgid "Show all"
 msgstr "Показать все"
 
 msgid "Save"
-msgstr "Сохранить"
+msgstr "Saqlash"
 
 msgid "Popup closing…"
 msgstr "Всплывающее окно закрывается..."

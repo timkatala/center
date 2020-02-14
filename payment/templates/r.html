@@ -4,10 +4,24 @@
 <tr class="row1">
 <!-- 	<td class="field-phone_number">{{i.date_joined|date:"d.m.y"}}</td>
  -->
+ <td  width=1 class="form-row">
+            <div class=" field-temp">
+            	
+           
+            
+              
+    <select name="teacher" required id="id_teacher" multiple>
+</select>
+        <a class="related-widget-wrapper-link change-related" id="add_id_teacher"
+            href="/uz/admin/payment/payment/?student__id__exact={{i.student.id}}&teacher__id__exact={{i.teacher.id}}"
+            title="Добавить ещё один объект типа "teacher=""><span class="sidebar-link-icon icon-data"></span></a>
+
+            </div>
+        </td>
 <td class="field-phone_number">{{i.teacher.name}}</td>
 
 <td class="field-phone_number">{{i.teacher.subject}}</td>
-<td class="field-name"><input size="1" type="text" name="" value="{%if i.debt == None %}0{%else%}{{i.debt}}{%endif%}" maxlength="50" >
+<td class="field-name"><input size="2"  id="tochange-{{i.id}}" type="text" name="" value="{%if i.debt == None %}0{%else%}{{i.debt}}{%endif%}" maxlength="50" >
 </td>
 </tr>
 {% endfor %}
@@ -17,10 +31,10 @@
 <td>
 			<table 	>
 <tbody>
-{%for  i, v in d %}
+{%for i, v in d %}
 <tr class="row1">
-<td class="topay"><input size="1" id="{{i.id}}"type="text" name="topay-{{i.id}}" value="{%if i.has_to_pay == None %}{{i.contract.price}}{%else%}{{i.has_to_pay}}{%endif%}" maxlength="50" >
-<td class="field-name"><input size="1" type="text" name="" id="special" value="={{v}}" maxlength="50" >
+<td><input  class="topay" size="2" id="topay-{{i.contract.id}}"type="text" name="topay-{{i.id}}" value="{%if i.has_to_pay == None %}{{i.contract.price}}{%else%}{{i.has_to_pay}}{%endif%}" maxlength="50" >
+<td class="field-name"><input size="3" type="text" name="" id="special-{{i.contract.id}}" value="={{v}}" maxlength="50" >
 </td>
 </tr>
 {% endfor %}
@@ -33,7 +47,7 @@
 <tbody>
 {%for  i, v in d %}
 <tr class="row1">
-<td class="tochange"><input size="1" id="{{i.id}}" type="text" name="params-{{i.id}}" value="{{i.paid}}" maxlength="50" >
+<td class="tochange"><input class="tochange" size="1" type="text" name="params-{{i.id}}" value="{{i.paid}}" maxlength="50" >
 </td>
 </tr>
 {% endfor %}
@@ -44,7 +58,7 @@
 <tbody>
 {%for  i, v in d %}
 <tr class="row1">
-<td class="field-name"><input size="4" type="text" name="" value="{%if i.has_to_pay == None %} - {%else%}{{i.date|date:'d.m.y'}}{%endif%}" maxlength="50" >
+<td class="field-name"><input size="5" type="text" name="" value="{%if i.has_to_pay == None %} - {%else%}{{i.date|date:'d.m.y'}}{%endif%}" maxlength="50" >
 </td>
 </tr>
 {% endfor %}
