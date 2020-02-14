@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 import datetime
 from django.utils.html import format_html
-
+from branch.models import *
 # MONTHS = (
 # 	('Yanvar', 'Yanvar'),
 # 	('Fevral', 'Fevral'),
@@ -42,6 +42,7 @@ YEARS = (
 YEAR_CHOICES = [(f'{m} {y}',f'{m} {y}') for y in range(2020, 2026) for m in MONTHS]
 
 class Teacher(models.Model):
+	branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
 	name = models.CharField(max_length=50, blank=True, verbose_name="Ismi")
 	subject = models.CharField(max_length=100, blank=True, verbose_name="Fan")
 	official = models.IntegerField(default=0, verbose_name="rasmiy oylik")
@@ -54,6 +55,8 @@ class Teacher(models.Model):
 		verbose_name_plural="O'qituvchilar"
 
 class Salary(models.Model):
+	branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
+
 	teacher = models.ForeignKey(Teacher, related_name='salaries',on_delete=models.CASCADE)
 	period = models.CharField(choices=YEAR_CHOICES,
 	     	default=f'{MONTHS[datetime.datetime.now().month-1]} {datetime.datetime.now().year}', max_length=20)
@@ -77,7 +80,7 @@ class Salary(models.Model):
 
 
 class Student(models.Model):
-	teacher = models.ManyToManyField(Teacher, related_name='students', verbose_name="o'qituvchisi")
+	branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
 	charachteristics = models.TextField(max_length=30, blank=True, verbose_name="Ta'rif")
 	name = models.CharField(max_length=50, blank=True, verbose_name="FISH")
 	phone_number = models.CharField(max_length=20, blank=True,default='-', verbose_name="Tel. nomeri")
@@ -87,12 +90,16 @@ class Student(models.Model):
 	def __str__(self):
 		return self.name 
 
+	class Meta:
+		verbose_name="Talaba"
+		verbose_name_plural="Talabalar"
 	# @property
 	# def model_two_other_field(self):
 	# 	return ', '.join([m2.percent for m2 in self.payments.all()])
 
 
 class Contract(models.Model):
+	branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
 
 	TIMES = [(f'{t}.00', f'{t}.00') for t in range(6, 24)]
 	teacher = models.ForeignKey(Teacher, related_name='contracts', verbose_name="o'qituvchisi",on_delete=models.CASCADE)
@@ -115,6 +122,8 @@ class Contract(models.Model):
 		return f'{self.teacher.name}-{self.student.name}'
 
 class Payment(models.Model):
+	branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
+	kassir = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 	MONTH_CHOICE = [(m,m) for m in range(1,13)]
 	contract = models.ForeignKey(Contract, related_name='payments',on_delete=models.CASCADE)

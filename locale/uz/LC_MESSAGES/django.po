@@ -180,15 +180,15 @@ msgstr "Yo'q"
 msgid ""
 "Hold down \"Control\", or \"Command\" on a Mac, to select more than one."
 msgstr ""
-"Удерживайте \"Control\" (или \"Command\" на Mac), чтобы выбрать несколько "
-"значений."
+"Bir nechtasini tanlash uchun \"Control\" (yoki \"Command\" Macda), ushlab"
+"turing."
 
 #, python-brace-format
 msgid "The {name} \"{obj}\" was added successfully."
-msgstr "{name} \"{obj}\" было успешно добавлено."
+msgstr "{name} \"{obj}\" muvofaqiyatli qo'shildi."
 
 msgid "You may edit it again below."
-msgstr "Вы можете снова изменить этот объект ниже."
+msgstr "Quyida yana bir bor o'zgartirishingiz mumkin."
 
 #, python-brace-format
 msgid ""
@@ -216,21 +216,21 @@ msgstr ""
 msgid ""
 "The {name} \"{obj}\" was changed successfully. You may add another {name} "
 "below."
-msgstr "{name} \"{obj}\" был изменен. Вы можете добавить еще один {name} ниже."
+msgstr "{name} \"{obj}\" o'zgardi. Quyida yangi {name} qoshishingiz mumkin."
 
 #, python-brace-format
 msgid "The {name} \"{obj}\" was changed successfully."
-msgstr "{name} \"{obj}\" был изменен."
+msgstr "{name} \"{obj}\" o'zgardi."
 
 msgid ""
 "Items must be selected in order to perform actions on them. No items have "
 "been changed."
 msgstr ""
-"Чтобы произвести действия над объектами, необходимо их выбрать. Объекты не "
-"были изменены."
+"O'gartirish uchun obyektlar tanlanishi kerak. Biror obyekt"
+"o'zgarmadi."
 
 msgid "No action selected."
-msgstr "Действие не выбрано."
+msgstr "Buyruq tanlanmadi."
 
 #, python-formata
 msgid "The %(name)s \"%(obj)s\" was deleted successfully."
@@ -242,15 +242,15 @@ msgstr "%(name)s с ID \"%(key)s\" не существует. Возможно �
 
 #, python-format
 msgid "Add %s"
-msgstr "Qo'shihsh %s"
+msgstr "Qo'shish %s"
 
 #, python-format
 msgid "Change %s"
-msgstr "Изменить %s"
+msgstr "O'zgartirish %s"
 
 #, python-format
 msgid "View %s"
-msgstr "Просмотреть %s"
+msgstr "Ko'rish %s"
 
 msgid "Database error"
 msgstr "Ошибка базы данных"
@@ -277,7 +277,7 @@ msgstr "Выбрано 0 объектов из %(cnt)s "
 
 #, python-format
 msgid "Change history: %s"
-msgstr "История изменений: %s"
+msgstr "Qaydnomalar tarixi: %s"
 
 #. Translators: Model verbose name and instance representation,
 #. suitable to be an item in a list.
@@ -303,23 +303,23 @@ msgid "Site administration"
 msgstr "Administratsiya"
 
 msgid "Log in"
-msgstr "Войти"
+msgstr "Kirish"
 
 #, python-format
 msgid "%(app)s administration"
 msgstr "«%(app)s administratsiyasi»"
 
 msgid "Page not found"
-msgstr "Страница не найдена"
+msgstr "Sahifa topilmadi"
 
 msgid "We're sorry, but the requested page could not be found."
-msgstr "К сожалению, запрашиваемая вами страница не найдена."
+msgstr "Afsuski, so'ralgan sahifa topilmadi."
 
 msgid "Home"
 msgstr "Bosh sahifa"
 
 msgid "Server error"
-msgstr "Ошибка сервера"
+msgstr "Server xatosi"
 
 msgid "Server error (500)"
 msgstr "Ошибка сервера (500)"
@@ -380,36 +380,36 @@ msgid "View site"
 msgstr "Открыть сайт"
 
 msgid "Documentation"
-msgstr "Документация"
+msgstr "Dokumenatsiya"
 
 msgid "Log out"
-msgstr "Выйти"
+msgstr "Chiqish"
 
 #, python-format
 msgid "Add %(name)s"
 msgstr "%(name)s qo'shish"
 
 msgid "History"
-msgstr "История"
+msgstr "Qaydnomalar"
 
 msgid "View on site"
-msgstr "Смотреть на сайте"
+msgstr "Saytda ko'rish"
 
 msgid "Filter"
-msgstr "Фильтр"
+msgstr "Filter"
 
 msgid "Remove from sorting"
-msgstr "Удалить из сортировки"
+msgstr "Saralashdan o'chirib tashlash"
 
 #, python-format
 msgid "Sorting priority: %(priority_number)s"
-msgstr "Приоритет сортировки: %(priority_number)s"
+msgstr "Saralash tartibi: %(priority_number)s"
 
 msgid "Toggle sorting"
-msgstr "Сортировать в другом направлении"
+msgstr "Boshqa yo'nalishda saralash"
 
 msgid "Delete"
-msgstr "Удалить"
+msgstr "O'chirish"
 
 #, python-format
 msgid ""
@@ -441,13 +441,13 @@ msgid "Objects"
 msgstr "Объекты"
 
 msgid "Yes, I'm sure"
-msgstr "Да, я уверен"
+msgstr "Ha, aniq"
 
 msgid "No, take me back"
-msgstr "Нет, отменить и вернуться к выбору"
+msgstr "Yo'q, ortga qaytaman"
 
 msgid "Delete multiple objects"
-msgstr "Удалить несколько объектов"
+msgstr "Bir necht obyektni o'chirib tashlash"
 
 #, python-format
 msgid ""
@@ -475,10 +475,10 @@ msgstr ""
 "связанные с ними элементы будут удалены:"
 
 msgid "View"
-msgstr "Просмотреть"
+msgstr "Ko'rish"
 
 msgid "Delete?"
-msgstr "Удалить?"
+msgstr "Ochirilsinmi?"
 
 #, python-format
 msgid " By %(filter_title)s "
@@ -534,7 +534,7 @@ msgid "Date/time"
 msgstr "Дата и время"
 
 msgid "User"
-msgstr "Пользователь"
+msgstr "Foydalanuvchi"
 
 msgid "Action"
 msgstr "Действие"
@@ -571,19 +571,19 @@ msgid "%(full_result_count)s total"
 msgstr "%(full_result_count)s всего"
 
 msgid "Save as new"
-msgstr "Сохранить как новый объект"
+msgstr "Yangi obyekt kabi salqash"
 
 msgid "Save and add another"
-msgstr "Сохранить и добавить другой объект"
+msgstr "Saqlab boshqa obyekt qo'shish"
 
 msgid "Save and continue editing"
-msgstr "Сохранить и продолжить редактирование"
+msgstr "Saqlab turib davom etish"
 
 msgid "Save and view"
-msgstr "Сохранить и просмотреть"
+msgstr "Saqlash va kuzatish"
 
 msgid "Close"
-msgstr "Закрыть"
+msgstr "Yopish"
 
 #, python-format
 msgid "Change selected %(model)s"
@@ -617,29 +617,29 @@ msgstr ""
 "новый пароль дважды, чтобы мы могли убедиться в правильности написания."
 
 msgid "Change my password"
-msgstr "Изменить мой пароль"
+msgstr "Parolni o'zgartirish"
 
 msgid "Password reset"
-msgstr "Восстановление пароля"
+msgstr "Parolni tiklash"
 
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr "Ваш пароль был сохранен.  Теперь вы можете войти."
+msgstr "Sizning parol saplandi. Endi tizimga kirishingiz mumkin."
 
 msgid "Password reset confirmation"
-msgstr "Подтверждение восстановления пароля"
+msgstr "Parol tiklashni tasdiqlash"
 
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
 msgstr ""
-"Пожалуйста, введите новый пароль дважды, чтобы мы могли убедиться в "
-"правильности написания."
+"Iltimos, parolni tasdiqlash uchun uni ikii marotaba kiriting "
+"to'griligini tasdiqlashga."
 
 msgid "New password:"
-msgstr "Новый пароль:"
+msgstr "Yangi parol:"
 
 msgid "Confirm password:"
-msgstr "Подтвердите пароль:"
+msgstr "Parolni tasdiqlang:"
 
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
@@ -673,7 +673,7 @@ msgstr ""
 "связана с этим адресом электронной почты."
 
 msgid "Please go to the following page and choose a new password:"
-msgstr "Пожалуйста, перейдите на эту страницу и введите новый пароль:"
+msgstr "Iltimos, quyidagi sahifaga o'ting va yangi Sparol kiriting:"
 
 msgid "Your username, in case you've forgotten:"
 msgstr "Ваше имя пользователя (на случай, если вы его забыли):"
@@ -696,7 +696,7 @@ msgid "Email address:"
 msgstr "Адрес электронной почты:"
 
 msgid "Reset my password"
-msgstr "Восстановить мой пароль"
+msgstr "Parolni tiklash"
 
 msgid "All dates"
 msgstr "Все даты"

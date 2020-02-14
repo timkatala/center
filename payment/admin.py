@@ -25,6 +25,7 @@ def p(t=None,s=None):
 
 	class PaymentTabular(admin.TabularInline):
 		model = Payment
+		exclude=["branch", 'kassir']
 		extra=0
 		form = AlwaysChangedModelForm
 		def get_queryset(self, request):
@@ -76,6 +77,8 @@ class StudentAdmin(admin.ModelAdmin):
 	list_display_links=('name',)
 	change_list_template='s.html'
 	#form = StudentForm
+	exclude=("branch",)
+	readonly_fields=('branch', )
 	search_fields=['name',]
 	formfield_overrides = {
 		models.CharField: {'widget': TextInput(attrs={'size':10,'width':10})},
@@ -141,12 +144,32 @@ class StudentAdmin(admin.ModelAdmin):
 		return super(StudentAdmin, self).changelist_view(request, extra_context)
 	def get_model_perms(self, request):
 		if request.user.kassir:
-			return HttpResponseNotAllowed
+			return {}
 		return super(StudentAdmin, self).get_model_perms(request)
-	def get_object(self, request, object_id, form_field=None):
+	# def get_object(self, request, object_id, from_field=None):
+	# 	query =  super(StudentAdmin, self).get_object(request, object_id, from_field=None)
+	# 	print(query)
+	# 	# if request.user.branch!=query.branch:
+	# 	# 	return None
+		# return query
+	def save_model(self, request, obj, form, change):
+		obj.branch = request.user.branch
+		super(StudentAdmin, self).save_model(request, obj, form, change)
+	def get_queryset(self, request):
+		queryset = super(StudentAdmin, self).get_queryset(request)
+		if request.user.head:
+			return queryset
+		if request.user.kassir and not request.GET.get('q'):
+			return Student.objects.none()
+		return queryset.filter(branch=request.user.branch)
+	def get_object(self, request, object_id, from_field=None):
 		if request.user.kassir:
-			return Htt
-		return super().get_object(request, object_id, form_field=None)
+			s = Student.objects.get(id=object_id)
+			if s.branch==request.user.branch:
+				return s
+			return None
+		return super(StudentAdmin, self).get_object(request, object_id, from_field=None)
+		
 	class Media:
 		js = ('js/autoc.js','js/dfs.js','admin/js/inlines.js','admin/js/change_form.js','admin/js/prepopulate_init.js',)
 # 		css={
@@ -174,6 +197,8 @@ class TeacherAdmin(admin.ModelAdmin):
 	model = Teacher	
 	change_list_template='new.html'
 	list_display=('name','shartnoma',)
+	exclude=("branch ",)
+	readonly_fields=('branch', )
 	inlines=[SalaryTabular, p(None, None),]
 	def shartnoma(self, obj):
 		debt  = obj.salaries.all().aggregate(
@@ -264,31 +289,93 @@ class TeacherAdmin(admin.ModelAdmin):
 				id = i.split('-')[1]
 				Salary.objects.filter(pk=id).update(paid=v, official=request.POST.get(f'cur_official-{id}'))
 		return super(TeacherAdmin, self).changelist_view(request, extra_context)
+	def get_model_perms(self, request):
+		if request.user.kassir:
+			return {}
+		return super(TeacherAdmin, self).get_model_perms(request)
+	def save_model(self, request, obj, form, change):
+		obj.branch = request.user.branch
+		super(TeacherAdmin, self).save_model(request, obj, form, change)
+	def get_queryset(self, request):
+		queryset = super(TeacherAdmin, self).get_queryset(request)
+		if request.user.head:
+			return queryset
+		if request.user.kassir:
+			return Teacher.objects.none()
+
+
+		return queryset.filter(branch=request.user.branch)
+
 	class Media:
 		js = ('js/teacher.js',)
 admin.site.register(Teacher, TeacherAdmin)
 
+class ContractAdmin(admin.ModelAdmin):
+
+	model = Contract	
+	save_as = True
+
+	exclude=("branch ",)
+	readonly_fields=('branch', )
+	list_filter=('student','teacher',)	
+	def get_model_perms(self, request):
+		if request.user.kassir:
+			return {}
+		return super(ContractAdmin, self).get_model_perms(request)
 
 
-admin.site.register(Contract)
+	def get_queryset(self, request):
+
+		if '_popup' in request.GET:
+			request.GET = request.GET.copy()
+
+			request.GET.pop('_popup')
+		queryset = super(ContractAdmin, self).get_queryset(request)
+		if request.user.head:
+			return queryset
+		if request.user.kassir:
+			return Contract.objects.none()		
+		return queryset.filter(branch=request.user.branch)
+
+	def save_model(self, request, obj, form, change):
+		obj.branch = request.user.branch
+		super(ContractAdmin, self).save_model(request, obj, form, change)
+
+admin.site.register(Contract, ContractAdmin)
 
 class PaymentAdmin(admin.ModelAdmin):
 
 	model = Payment	
 	save_as = True
 
-	list_display=('teacher','period','paid', 'percent', )	
+	list_display=('teacher','period','paid', 'percent', 'kassir')	
 	list_editable=('period','paid','percent', )
-
+	exclude=("branch", 'kassir')
+	readonly_fields=('branch', 'kassir')
 	list_filter=('student','teacher',)	
+	def get_model_perms(self, request):
+		if request.user.kassir:
+			return {}
+		return super(PaymentAdmin, self).get_model_perms(request)
+
+
 	def get_queryset(self, request):
+
 		if '_popup' in request.GET:
 			request.GET = request.GET.copy()
 
 			request.GET.pop('_popup')
-			
-		return  super(PaymentAdmin, self).get_queryset(request)
+		queryset = super(PaymentAdmin, self).get_queryset(request)
+		if request.user.head:
+			return queryset
+		if request.user.kassir:
+			return Payment.objects.none()		
+		return queryset.filter(branch=request.user.branch)
 
+	def save_model(self, request, obj, form, change):
+		obj.branch = request.user.branch
+		obj.kassir  =  request.user
+		super(PaymentAdmin, self).save_model(request, obj, form, change)
 			
 	# def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
 	# 	context.update({
